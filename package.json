@@ -2,6 +2,9 @@
   "name": "discord-long-txt",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -24,7 +27,8 @@
     "react-dom": "19.2.8",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
-    "remove-markdown": "^0.6.4"
+    "remove-markdown": "^0.6.4",
+    "prisma": "^7.9.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -35,7 +39,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
-    "prisma": "^7.9.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

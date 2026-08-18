@@ -67,6 +67,8 @@ npm run dev
    - `DISCORD_CLIENT_SECRET`
 4. デプロイ（`railway.toml` で migrate deploy → start）
 
+Node.js 22 以上が必要です（`.nvmrc` / `nixpacks.toml` で指定済み）。
+
 Discord OAuth の Redirect URL に本番 URL を忘れず追加してください。
 
 ## URL 構成
