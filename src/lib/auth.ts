@@ -14,9 +14,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
     }),
   ],
-  pages: {
-    signIn: "/",
-  },
   callbacks: {
     session({
       session,

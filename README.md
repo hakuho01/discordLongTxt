@@ -58,14 +58,24 @@ npm run dev
 ## Railway デプロイ
 
 1. GitHub リポジトリを Railway に連携
-2. PostgreSQL アドオンを追加
-3. 環境変数を設定:
-   - `DATABASE_URL`（PostgreSQL から自動注入）
+2. **PostgreSQL アドオンを追加**
+3. **Web サービスに DB 接続文字列を渡す**（最重要）
+
+   Web サービス → **Variables** → **New Variable** → **Add Reference**
+
+   | Variable | 参照元 |
+   |----------|--------|
+   | `DATABASE_URL` | PostgreSQL サービスの `DATABASE_URL` |
+
+   手入力する場合: `DATABASE_URL=${{Postgres.DATABASE_URL}}`
+   （`Postgres` は PostgreSQL サービスの名前。自分の環境の名前に合わせる）
+
+4. その他の環境変数を設定:
    - `AUTH_SECRET`
    - `AUTH_URL`（例: `https://your-app.up.railway.app`）
    - `DISCORD_CLIENT_ID`
    - `DISCORD_CLIENT_SECRET`
-4. デプロイ（`railway.toml` で migrate deploy → start）
+5. デプロイ（起動時に migrate → Next.js start）
 
 Node.js 22 以上が必要です（`.nvmrc` / `nixpacks.toml` で指定済み）。
 
