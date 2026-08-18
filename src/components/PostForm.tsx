@@ -105,7 +105,7 @@ export function PostForm({
       <div>
         <div className="mb-2 flex items-center justify-between">
           <label htmlFor="body" className="text-sm font-medium text-zinc-300">
-            本文（Markdown対応）
+            本文（Markdown対応・Enterで改行）
           </label>
           <span className="text-xs text-zinc-500">
             {body.length.toLocaleString()} / {POST_BODY_MAX_LENGTH.toLocaleString()}
