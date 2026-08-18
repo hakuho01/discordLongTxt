@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LongTxt — Discord向け長文共有サービス
 
-## Getting Started
+ふせったーのDiscord版のような、長文共有Webサービスです。
 
-First, run the development server:
+## 機能
+
+- Discord OAuth ログイン（編集・削除の本人確認）
+- Markdown 対応の長文投稿
+- 公開 URL（`/p/{slug}`）で全文閲覧
+- Open Graph メタタグ（Discord プレビュー対応）
+- 論理削除
+- レート制限（投稿: 10件/時間、API: 20req/分/IP）
+
+## セットアップ
+
+### 1. 依存関係
+
+```bash
+npm install
+```
+
+### 2. 環境変数
+
+`.env.example` を `.env` にコピーして設定します。
+
+```bash
+cp .env.example .env
+```
+
+`AUTH_SECRET` の生成:
+
+```bash
+openssl rand -base64 32
+```
+
+### 3. Discord アプリ設定
+
+1. [Discord Developer Portal](https://discord.com/developers/applications) でアプリを作成
+2. OAuth2 → Redirects に以下を追加:
+   - 開発: `http://localhost:3000/api/auth/callback/discord`
+   - 本番: `https://your-app.up.railway.app/api/auth/callback/discord`
+3. Client ID / Client Secret を `.env` に設定
+
+### 4. データベース
+
+PostgreSQL を用意して `DATABASE_URL` を設定し、マイグレーションを実行:
+
+```bash
+npm run db:migrate
+```
+
+### 5. 開発サーバー
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Railway デプロイ
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. GitHub リポジトリを Railway に連携
+2. PostgreSQL アドオンを追加
+3. 環境変数を設定:
+   - `DATABASE_URL`（PostgreSQL から自動注入）
+   - `AUTH_SECRET`
+   - `AUTH_URL`（例: `https://your-app.up.railway.app`）
+   - `DISCORD_CLIENT_ID`
+   - `DISCORD_CLIENT_SECRET`
+4. デプロイ（`railway.toml` で migrate deploy → start）
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Discord OAuth の Redirect URL に本番 URL を忘れず追加してください。
 
-## Learn More
+## URL 構成
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| パス | 説明 |
+|------|------|
+| `/` | トップ（ログイン・投稿一覧） |
+| `/posts/new` | 新規投稿 |
+| `/posts/{slug}/edit` | 編集 |
+| `/p/{slug}` | 公開ページ（OG タグ付き） |
